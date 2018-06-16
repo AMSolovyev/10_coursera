@@ -5,18 +5,14 @@ from openpyxl import Workbook
 from bs4 import BeautifulSoup
 
 
-def get_courses(url):
+def fetch_content(url):
     xml = requests.get(url).content
-    return xml
-
-
-def get_data(xml):
     root = etree.XML(xml)
     return [link.text for link in root.iter('{*}loc')]
 
 
-def get_course_info(course_all_info):
-    soup = BeautifulSoup(course_all_info, 'html.parser')
+def get_course_info(course_html):
+    soup = BeautifulSoup(course_html, 'html.parser')
     title = soup.find('h1', class_='title').text
     start_date = soup.find(
         'div', class_='startdate'
@@ -32,11 +28,13 @@ def get_course_info(course_all_info):
         rating = rating_tag.text.split()[0]
     else:
         rating = None
-    return {'title': title,
-            'starting_date': start_date,
-            'language': language,
-            'duration_in_weeks': duration_in_weeks,
-            'rating': rating}
+    return {
+        'title': title,
+        'starting_date': start_date,
+        'language': language,
+        'duration_in_weeks': duration_in_weeks,
+        'rating': rating
+    }
 
 
 def output_courses_info_to_xlsx(courses_info):
@@ -68,8 +66,7 @@ if __name__ == '__main__':
     url = 'https://www.coursera.org/sitemap~www~courses.xml'
     print('The courses are loaded from coursera.com {}'.format(url))
 
-    courses = get_courses(url)
-    all_courses = get_data(courses)
+    all_courses = fetch_content(url)
     random_courses = sample(all_courses, courses_quality)
     print('We take random courses list \n {}'.format(random_courses))
 
