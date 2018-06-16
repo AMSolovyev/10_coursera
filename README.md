@@ -1,6 +1,17 @@
-# Coursera Dump
+# Find 20 random courses 
 
-[TODO. There will be project description]
+The script ```coursera.py``` looks for 20 random courses descriptions 
+from Coursera.org and saves them into Excel-file.
+
+The course parametrs are: a name, a language, a date start, study in weeks, an average estimate.
+
+# How to use
+```
+    - virtualenv -p python3 env
+    - source env/bin/activate
+    - pip install -r requirements.txt
+    - python coursera.py
+```
 
 # Project Goals
 
