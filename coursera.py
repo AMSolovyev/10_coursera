@@ -6,7 +6,7 @@ from bs4 import BeautifulSoup
 import argparse
 
 
-def fetch_content_from_url(url):
+def fetch_list_from_url(url):
     xml = requests.get(url).content
     root = etree.XML(xml)
     return [link.text for link in root.iter('{*}loc')]
@@ -43,8 +43,10 @@ def output_courses_info_to_xlsx(courses_info):
     sheet = excel_workbook.active
     sheet.title = 'Courses are from coursera.com'
     column_names = [
-        'Course title', 'Starting date',
-        'Language', 'Duration (weeks)',
+        'Course title',
+        'Starting date',
+        'Language',
+        'Duration (weeks)',
         'Rating'
     ]
     excel_workbook.active.append(column_names)
@@ -75,16 +77,15 @@ if __name__ == '__main__':
 
     print('The courses are loaded from coursera.com {}'.format(url))
 
-    courses_page_html = fetch_content_from_url(url)
-    random_page_courses = sample(courses_page_html, courses_quantity)
-    print('We take random courses list \n {}'.format(random_page_courses))
+    courses_html = fetch_list_from_url(url)
+    random_courses_urls = sample(courses_html, courses_quantity)
+    print('We take random courses list \n {}'.format(random_courses_urls))
 
     courses_raw_pages = [
-        requests.get(course_url).content for course_url in random_page_courses]
+        requests.get(course_url).content for course_url in random_courses_urls]
     courses_info = [
         get_course_info(course_raw_page)
         for course_raw_page in courses_raw_pages]
-
 
     args = get_parser()
     output_path = args.output
