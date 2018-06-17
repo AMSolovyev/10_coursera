@@ -10,7 +10,7 @@ The course parametrs are: a name, a language, a date start, study in weeks, an a
     - virtualenv -p python3 env
     - source env/bin/activate
     - pip install -r requirements.txt
-    - python coursera.py
+    - python coursera.py -o /home/linux/PycharmProjects/My_project/venv/script/my_coursera.xlsx
 ```
 
 # Project Goals
