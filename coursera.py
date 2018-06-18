@@ -6,7 +6,7 @@ from bs4 import BeautifulSoup
 import argparse
 
 
-def fetch_list_from_url(url):
+def fetch_courses_urls(url):
     xml = requests.get(url).content
     root = etree.XML(xml)
     return [link.text for link in root.iter('{*}loc')]
@@ -77,8 +77,8 @@ if __name__ == '__main__':
 
     print('The courses are loaded from coursera.com {}'.format(url))
 
-    courses_html = fetch_list_from_url(url)
-    random_courses_urls = sample(courses_html, courses_quantity)
+    courses_urls = fetch_courses_urls(url)
+    random_courses_urls = sample(courses_urls, courses_quantity)
     print('We take random courses list \n {}'.format(random_courses_urls))
 
     courses_raw_pages = [
